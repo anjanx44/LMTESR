@@ -25,6 +25,51 @@
                 document.write('<link rel="stylesheet" id="theme-style" href="css/app.css">');
             }
         </script>
+        
+        
+         <script type="text/javascript">
+	
+	        $(function() {
+	    		$('#approveLeave').click(
+	    				
+	    			 function(e) {
+	    				 $.post({
+	     					
+	     					url : 'approveLeave',
+	     					data : $('form[name=leaveForm]').serialize(),
+	     					success : function(res) {
+		     					console.log("i am here");
+	     						$("#approvemsg").show().delay(1500).fadeOut();
+	     					}
+	     				
+	     				})
+	    				
+	    			}); 
+	    	});
+
+        </script>
+        
+        <script type="text/javascript">
+	
+	        $(function() {
+	    		$('#refuseLeave').click(
+	    				
+	    			 function(e) {
+	    				 $.post({
+	     					
+	     					url : 'refuseLeave',
+	     					data : $('form[name=leaveForm]').serialize(),
+	     					success : function(res) {
+	     						$("#refusemsg").show().delay(1500).fadeOut();
+	     					}
+	     				
+	     				})
+	    				
+	    			}); 
+	    	});
+
+        </script>
+        
     </head>
     <body>
         <div class="main-wrapper">
@@ -66,7 +111,7 @@
                         <nav class="menu">
                             <ul class="sidebar-menu metismenu" id="sidebar-menu">
                                 <li class="active open">
-                                    <a href="responsive-tables.html">
+                                    <a href="/">
                                         <i class="fa fa-table"></i> Leaves Summary
                                     </a>
                                 </li>
@@ -177,12 +222,19 @@
                 <article class="content responsive-tables-page" style="padding-top: 50px;">
                     <div class="title-block">
                         <h1 class="title"> Leaves Summary </h1>
+                        	<div id="approvemsg" class="alert alert-success" style="display: none">
+						       <strong>Success!</strong> Leave Approve Successfully.
+						    </div>
+						    <div id="refusemsg" class="alert alert-danger" style="display: none">
+							  <strong>Success!</strong> ILeave Refuse Successfully.
+							</div>
+							
                         <p class="title-description"> 
-                        	<!-- <a><button class="btn btn-success"> Save</button> </a>
-                        	<a><button class="btn btn-secondary"> Discard</button> </a> -->
-                        	 <a><button class="btn btn-success" style="float:right"> Approve</button> </a>
-                        	<a><button class="btn btn-secondary" style="float:right"> Refuse</button> </a>
-                        	
+                        	 <a href="editLeave?id=${oneLeave.id}"><button class="btn btn-success"> Edit</button> </a>
+                        	<a href="createLeave"><button class="btn btn-secondary"> Create</button> </a> 
+                        	 <!-- <a><button id="approveLeave" class="btn btn-success" style="float:right"> Approve</button> </a>
+                        	<a><button id="refuseLeave" class="btn btn-secondary" style="float:right"> Refuse</button> </a>
+                        	 -->
                         </p>
                         
                     </div>
@@ -196,23 +248,23 @@
                                         <h3 class="title"> Boxed Inputs </h3>
                                        
                                     </div>
-                                    <form>
+                                    <form name="leaveForm" method="post" action="">
                                     	
                                         <div class="form-group">
                                             <label class="control-label">Description</label>
-                                            <input type="text" disabled="disabled" class="form-control boxed" placeholder="Disabled input text"> </div>
+                                            <input name="description" type="text" disabled="disabled" class="form-control boxed" value="${oneLeave.description}" > </div>
                                         <div class="form-group">
                                             <label class="control-label">Leave Type</label>
-                                             <input type="text" disabled="disabled" class="form-control boxed" placeholder="Disabled input text">
+                                             <input name="leaveType" type="text" disabled="disabled" class="form-control boxed" value="${oneLeave.leaveType}">
                                             
                                          </div>
                                          
                                         <div class="form-group">
                                             <label class="control-label">Start Date</label>
-                                            <input type="text" disabled="disabled" class="form-control boxed" placeholder="Disabled input text"> </div>
+                                            <input name="startDate" type="text" disabled="disabled" class="form-control boxed" value="${oneLeave.startDate}"> </div>
                                         <div class="form-group">
                                             <label class="control-label">End Date</label>
-                                            <input type="text" disabled="disabled" class="form-control boxed" placeholder="Disabled input text">
+                                            <input name="endDate" type="text" disabled="disabled" class="form-control boxed" value="${oneLeave.endDate}">
                                         </div>
                                        
                                         
@@ -224,24 +276,24 @@
                                     <div class="title-block">
                                         <h3 class="title"> Boxed Inputs Validation </h3>
                                     </div>
-                                    <form role="form">
+                                    <form name="leaveForm" role="form" method="post">
                                          <div class="form-group">
                                             <label class="control-label">Employee</label>
-                                             <input type="text" disabled="disabled" class="form-control boxed" placeholder="Disabled input text">
+                                             <input name="empName" type="text" disabled="disabled" class="form-control boxed" value="${oneLeave.empName}">
                                             
                                          </div>
                                           <div class="form-group">
                                             <label class="control-label">Department</label>
-                                             <input type="text" disabled="disabled" class="form-control boxed" placeholder="Disabled input text">
+                                             <input name="empDept" type="text" disabled="disabled" class="form-control boxed" value="${oneLeave.empDept}">
                                             
                                          </div>
                                           <div class="form-group">
                                             <label class="control-label">Duration</label>
-                                            <input type="text" disabled="disabled" class="form-control boxed" placeholder="Disabled input text">
+                                            <input name="duration" type="text" disabled="disabled" class="form-control boxed" value="${oneLeave.duration}">
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Comment By Manager</label>
-                                            <textarea rows="3" disabled="disabled" class="form-control boxed"></textarea>
+                                            <textarea name="managerComment" rows="3" disabled="disabled" class="form-control boxed">${oneLeave.managerComment}</textarea>
                                         </div>
                                     </form>
                                 </div>
@@ -343,8 +395,8 @@
                 <div class="color-secondary"></div>
             </div>
         </div>
-        <script src="js/vendor.js"></script>
-        <script src="js/app.js"></script>
+        <!-- <script src="js/vendor.js"></script>
+        <script src="js/app.js"></script> -->
         
     </body>
 </html>

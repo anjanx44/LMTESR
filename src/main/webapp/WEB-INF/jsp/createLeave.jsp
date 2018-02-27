@@ -36,6 +36,7 @@
     		$('#saveLeave').click(
     				
     			function(e) {
+    				$("#savemsg").show().delay(1500).fadeOut();
     				console.log(5 + 6);
     				e.preventDefault();
     				$('input').next().remove();
@@ -44,19 +45,8 @@
     					url : 'saveLeave',
     					data : $('form[name=leaveForm]').serialize(),
     					success : function(res) {
-    						console.log("start")
-    						if (res.validated) {
-    							$('#resultContainer pre code').text(
-    									JSON.stringify(res.employee));
-    							$('#resultContainer').show();
-    						} else {
-    							$.each(res.errorMessages, function(key, value) {
-    								$('input[name=' + key + ']').after(
-    										'<span class="error">' + value
-    												+ '</span>');
-    							});
-    						}
-    						console.log("end")
+        					console.log("sdflk");
+    						
     					}
     				
     				})
@@ -140,7 +130,7 @@
                         <nav class="menu">
                             <ul class="sidebar-menu metismenu" id="sidebar-menu">
                                 <li class="active open">
-                                    <a href="responsive-tables.html">
+                                    <a href="/">
                                         <i class="fa fa-table"></i> Leaves Summary
                                     </a>
                                 </li>
@@ -251,6 +241,9 @@
                 <article class="content responsive-tables-page" style="padding-top: 50px;">
                     <div class="title-block">
                         <h1 class="title"> Leaves Summary </h1>
+                        	<div id="savemsg" class="alert alert-success" style="display: none">
+						       <strong>Success!</strong> Leave Save Successfully.
+						    </div>
                         <p class="title-description"> 
                         	<a><button type="submit" id = "saveLeave" class="btn btn-success"> Save</button> </a>
                         	<a><button class="btn btn-secondary"> Discard</button> </a>
@@ -309,6 +302,8 @@
                                             <label class="control-label">Employee</label>
                                              <select name="empName" class="form-control boxed">
                                                 <option value="Anjan Biswas">Anjan Biswas</option>
+                                                <option value="Tarek Sefati">Tarek Sefati</option>
+                                                <option value="Ruhin Gazi">Ruhin Gazi</option>
                                             </select> 
                                             
                                          </div>
@@ -316,6 +311,7 @@
                                             <label class="control-label">Department</label>
                                              <select name="empDept" class="form-control boxed">
                                                 <option value="Development">Development</option>
+                                                <option value="Development">Robotics</option>
                                             </select> 
                                             
                                          </div>

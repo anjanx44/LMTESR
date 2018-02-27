@@ -147,4 +147,14 @@ public class Leaves implements java.io.Serializable {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return "Leaves [id=" + id + ", leaveType=" + leaveType + ", description=" + description + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", duration=" + duration + ", empId=" + empId
+				+ ", managerComment=" + managerComment + ", empName=" + empName + ", empDept=" + empDept + ", status="
+				+ status + "]";
+	}
+	
+	
+
 }

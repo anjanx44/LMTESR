@@ -12,6 +12,12 @@
         <!-- Theme initialization -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     
+    
+    	<script type="text/javascript">
+    	function tableRow(id){
+    		window.location.href = "leaveDetails?id="+id+"";  
+        }
+    	</script>
         
         
          <script type="text/javascript">
@@ -28,9 +34,10 @@
 	    				var list;
 	    				$.each(res, function(key, value) {
 	    					console.log(value.email)
-	    					list += '<tr>';
+	    					
+	    					list += "<tr onClick='tableRow("+value.id+")'>";
 	    					list += '<td>' + value.empName + '</td>';
-	    					list += '<td>' + 'sadfsdf' + '</td>';
+	    					list += '<td>' + 'N/A' + '</td>';
 	    					list += '<td>' + value.description + '</td>';
 	    					list += '<td>' + value.duration + '</td>';
 	    					list += '<td>' + value.startDate + '</td>';

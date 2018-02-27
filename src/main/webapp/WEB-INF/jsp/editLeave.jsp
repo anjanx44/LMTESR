@@ -25,6 +25,79 @@
                 document.write('<link rel="stylesheet" id="theme-style" href="css/app.css">');
             }
         </script>
+        
+        
+        
+       <script type="text/javascript">
+	
+	        $(function() {
+	    		$('#editLeave').click(
+	    				
+	    			 function(e) {
+	    				 $.post({
+	     					
+	     					url : 'editLeave',
+	     					data : $('form[name=leaveForm]').serialize(),
+	     					success : function(res) {
+	     						
+	     						location.reload();
+
+	     						/* $("#editmsg").show().delay(1500).fadeOut(); */
+	     						
+	     					}
+	     				
+	     				})
+	    				
+	    			}); 
+	    	});
+
+        </script>
+        
+         <script type="text/javascript">
+	
+	        $(function() {
+	    		$('#approveLeave').click(
+	    				
+	    			 function(e) {
+	    				 $.post({
+	     					
+	     					url : 'approveLeave',
+	     					data : $('form[name=leaveForm]').serialize(),
+	     					success : function(res) {
+		     					console.log("i am here");
+	     						$("#approvemsg").show().delay(1500).fadeOut();
+	     					}
+	     				
+	     				})
+	    				
+	    			}); 
+	    	});
+
+        </script>
+        
+        <script type="text/javascript">
+	
+	        $(function() {
+	    		$('#refuseLeave').click(
+	    				
+	    			 function(e) {
+	    				 $.post({
+	     					
+	     					url : 'refuseLeave',
+	     					data : $('form[name=leaveForm]').serialize(),
+	     					success : function(res) {
+	     						$("#refusemsg").show().delay(1500).fadeOut();
+	     					}
+	     				
+	     				})
+	    				
+	    			}); 
+	    	});
+
+        </script>
+      
+        
+        
     </head>
     <body>
         <div class="main-wrapper">
@@ -66,7 +139,7 @@
                         <nav class="menu">
                             <ul class="sidebar-menu metismenu" id="sidebar-menu">
                                 <li class="active open">
-                                    <a href="responsive-tables.html">
+                                    <a href="/">
                                         <i class="fa fa-table"></i> Leaves Summary
                                     </a>
                                 </li>
@@ -175,13 +248,30 @@
                 <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
                 <div class="mobile-menu-handle"></div>
                 <article class="content responsive-tables-page" style="padding-top: 50px;">
+                	
                     <div class="title-block">
+                    		
                         <h1 class="title"> Leaves Summary </h1>
+                        <!-- meassage -->
+                        
+                        	<div id="editmsg" class="alert alert-success" style="display: none">
+						       <strong>Success!</strong> Leave edit Successfully.
+						    </div>
+                        	<div id="approvemsg" class="alert alert-success" style="display: none">
+						       <strong>Success!</strong> Leave Approve Successfully.
+						    </div>
+						    <div id="refusemsg" class="alert alert-danger" style="display: none">
+							  <strong>Success!</strong> ILeave Refuse Successfully.
+							</div>
+							
+							
                         <p class="title-description"> 
-                        	<a><button class="btn btn-success"> Save</button> </a>
+                        	
+                        	<a><button id="editLeave" class="btn btn-success"> Save</button> </a>
                         	<a><button class="btn btn-secondary"> Discard</button> </a>
-                        	 <a><button class="btn btn-success" style="float:right"> Approve</button> </a>
-                        	<a><button class="btn btn-secondary" style="float:right"> Refuse</button> </a>
+                        	
+                        	<a><button id="approveLeave" class="btn btn-success" style="float:right"> Approve</button> </a>
+                        	<a><button id="refuseLeave" class="btn btn-secondary" style="float:right"> Refuse</button> </a>
                         	
                         </p>
                         
@@ -196,28 +286,32 @@
                                         <h3 class="title"> Boxed Inputs </h3>
                                        
                                     </div>
-                                    <form>
+                                    <form action="editLeave" name="leaveForm" method="post">
+                                    	
+										<input type="hidden" name="status" value="${oneLeave.status}" />
+										<input type="hidden" name="id" value="${oneLeave.id}" />
                                     	
                                         <div class="form-group">
                                             <label class="control-label">Description</label>
-                                            <input type="text" class="form-control boxed"> </div>
+                                            <input name="description" type="text" class="form-control boxed" value="${oneLeave.description}"> </div>
                                         <div class="form-group">
                                             <label class="control-label">Leave Type</label>
-                                             <select class="form-control boxed">
-                                                <option>Option one</option>
-                                                <option>Option two</option>
-                                                <option>Option three</option>
-                                                <option>Option four</option>
+                                             <select name="leaveType" class="form-control boxed">
+                                             	<option value="${oneLeave.leaveType}">${oneLeave.leaveType}</option>
+                                                <option value="Legal Leaves 2018">Legal Leaves 2018</option>
+											    <option value="Compensatory Days">Compensatory Days</option>
+											    <option value="Sick Leaves">Sick Leaves</option>
+											    <option value="Unpaid">Unpaid</option>
                                             </select> 
                                             
                                          </div>
                                          
                                         <div class="form-group">
                                             <label class="control-label">Start Date</label>
-                                            <input type="date" class="form-control boxed" placeholder="Placeholder text"> </div>
+                                            <input name="startDate" type="date" class="form-control boxed" value="${oneLeave.startDate}"> </div>
                                         <div class="form-group">
                                             <label class="control-label">End Date</label>
-                                            <input type="date" class="form-control boxed" placeholder="Disabled input text">
+                                            <input name="endDate" type="date" class="form-control boxed" value="${oneLeave.endDate}">
                                         </div>
                                        
                                         
@@ -229,34 +323,32 @@
                                     <div class="title-block">
                                         <h3 class="title"> Boxed Inputs Validation </h3>
                                     </div>
-                                    <form role="form">
+                                    <form action="editLeave" role="form" name="leaveForm" method="post">
                                          <div class="form-group">
                                             <label class="control-label">Employee</label>
-                                             <select class="form-control boxed">
-                                                <option>Option one</option>
-                                                <option>Option two</option>
-                                                <option>Option three</option>
-                                                <option>Option four</option>
+                                             <select name="empName" class="form-control boxed">
+                                                <option value="${oneLeave.empName}">${oneLeave.empName}</option>
+                                                <option value="Anjan Biswas">Anjan Biswas</option>
+                                                <option value="Tarek Sefati">Tarek Sefati</option>
+                                                <option value="Ruhin Gazi">Ruhin Gazi</option>
                                             </select> 
                                             
                                          </div>
                                           <div class="form-group">
                                             <label class="control-label">Department</label>
-                                             <select class="form-control boxed">
-                                                <option>Option one</option>
-                                                <option>Option two</option>
-                                                <option>Option three</option>
-                                                <option>Option four</option>
+                                             <select name="empDept" class="form-control boxed">
+                                               <option value="${oneLeave.empDept}">${oneLeave.empDept}</option>
+                                               <option value="Development">Robotics</option>
                                             </select> 
                                             
                                          </div>
                                           <div class="form-group">
                                             <label class="control-label">Duration</label>
-                                            <input type="text" disabled="disabled" class="form-control boxed" placeholder="Disabled input text">
+                                            <input type="text" disabled="disabled" class="form-control boxed" value="${oneLeave.duration}">
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Comment By Manager</label>
-                                            <textarea rows="3" class="form-control boxed"></textarea>
+                                            <textarea name="managerComment" rows="3" class="form-control boxed">${oneLeave.managerComment}</textarea>
                                         </div>
                                     </form>
                                 </div>
@@ -358,8 +450,8 @@
                 <div class="color-secondary"></div>
             </div>
         </div>
-        <script src="js/vendor.js"></script>
-        <script src="js/app.js"></script>
+       <!--  <script src="js/vendor.js"></script>
+        <script src="js/app.js"></script> -->
         
     </body>
 </html>

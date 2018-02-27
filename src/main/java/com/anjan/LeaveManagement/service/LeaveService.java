@@ -25,9 +25,17 @@ public class LeaveService {
 		return repository.findAll();
 	}
 	
+	public Leaves getLeaveById(int id){
+		return repository.findOne(id);
+	}
+	
 	public List<Leaves> getPage(int pageNumber) {
 		PageRequest request = new PageRequest(pageNumber - 1, PAGESIZE, Sort.Direction.ASC, "id");
 		return repository.findAll(request).getContent();
+	}
+	
+	public void update(Leaves leave){
+		repository.save(leave);
 	}
 	
 }

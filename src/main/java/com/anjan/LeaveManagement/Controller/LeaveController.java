@@ -13,7 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,30 +57,28 @@ public class LeaveController {
 	}
 	
 	@GetMapping("/editLeave")
-	public ModelAndView editLeave(Model model) {
+	public ModelAndView editLeave(Model model,@RequestParam int id) {
+		Leaves lv = new Leaves();
+		
+		lv = leaveService.getLeaveById(id);
+		
+		model.addAttribute("oneLeave", lv);
+		
 		return new ModelAndView("editLeave");
 	}
+	
 	@GetMapping("/leaveDetails")
-	public ModelAndView leaveDetails(Model model) {
+	public ModelAndView leaveDetails(Model model, @RequestParam int id) {
+		
+		
+		Leaves lv =new Leaves();
+		
+		lv = leaveService.getLeaveById(id);
+		
+		model.addAttribute("oneLeave", lv);
+
 		return new ModelAndView("leaveDetails");
 	}
-	
-	
-	/*@GetMapping("/getAllEmplyee")
-	public void getAllEmplyee(){
-		
-		System.out.println("===========================Anjan");
-//		System.out.println(employeeService.getAllEmployee());
-		Employees leave = new Employees();
-		leave.setId(7);
-		leave.setName("masud");
-		leave.setDeptId(12);
-		
-		employeeService.save(leave);
-		
-		//return (List<Employees>) employeeService.getAllEmployee();
-	}*/
-	
 	
 	
 	@PostMapping(value = "/saveLeave", produces = { MediaType.APPLICATION_JSON_VALUE })
@@ -127,6 +127,77 @@ public class LeaveController {
 		
 	}
 	
+	@PostMapping(value = "/editLeave", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ResponseBody
+	public void editLeave(@ModelAttribute Leaves leave, BindingResult result) {
+		
+		// converting string to date
+			String sDate1 = leave.getStartDate();
+			String sDate2 = leave.getEndDate();
+			
+		    Date date1 = null;
+		    Date date2 = null;
+			try {
+				date1 = new SimpleDateFormat("yyyy-MM-dd").parse(sDate1);
+				date2 = new SimpleDateFormat("yyyy-MM-dd").parse(sDate2);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}  
+		    
+			System.out.println(sDate1+"\t"+date1);  
+			System.out.println(sDate2+"\t"+date2);
+			
+			
+			 //Comparing dates
+	        long difference = Math.abs(date1.getTime() - date2.getTime());
+	        int differenceDates = (int) (difference / (24 * 60 * 60 * 1000));
+	        
+	        System.out.println("diff date======"+differenceDates);
+	        
+	        
+	        
+		// save to database
+		leave.setDuration(differenceDates);
+		
+		
+		leaveService.update(leave);
+		
+		
+		
+		System.out.println(leave.toString());
+		
+		
+	}
+	
+	@PostMapping(value = "/approveLeave", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ResponseBody
+	public void approveLeave(@ModelAttribute Leaves leave, BindingResult result) {
+		System.out.println("============================================");
+		System.out.println(leave.toString());
+		
+		leave.setStatus("Approve");
+		
+		leaveService.update(leave);
+		
+		
+		
+		System.out.println(leave.toString());
+		
+		
+	}
+	
+	@PostMapping(value = "/refuseLeave", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ResponseBody
+	public void refuseLeave(@ModelAttribute Leaves leave, BindingResult result) {
+		
+		leave.setStatus("Refuse");
+		
+		leaveService.update(leave);
+		
+		System.out.println(leave.toString());
+		
+		
+	}
 	
 	
 	
